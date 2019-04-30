@@ -1,0 +1,16 @@
+.step-one {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	height: 300px;
+	.item {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 20px;
+		Button {
+			min-width: 60px;
+			margin-left: 20px;
+		}
+	}
+}

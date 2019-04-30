@@ -5,6 +5,9 @@ import { withRouter } from 'react-router-dom';
 
 import * as authActionCreators from '../../actions';
 
+import Title from '../../components/Title';
+import SmcStep from '../../components/SmcStep';
+
 import './Dashboard.scss';
 
 const mapStateToProps = (state) => {
@@ -30,7 +33,8 @@ export default class Dashboard extends Component {
   render() {
     return (
       <div className="dashboard-page">
-        SMC-多方安全计算
+        <Title name="Secure multiparty summation" />
+        <SmcStep />
       </div>
     );
   }
