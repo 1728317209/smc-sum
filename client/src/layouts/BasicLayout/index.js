@@ -3,9 +3,6 @@ import React, { Component } from 'react';
 import Layout from '@icedesign/layout';
 import { withRouter } from 'react-router';
 
-import Header from './components/Header';
-import Aside from './components/Aside';
-import Footer from './components/Footer';
 import MainRoutes from './MainRoutes';
 import './scss/index.scss';
 
@@ -17,17 +14,11 @@ export default class BasicLayout extends Component {
     return (
       <div className={layoutClassName}>
         <Layout>
-          <Header />
           <Layout.Section scrollable>
-            <Layout.Aside>
-              <Aside />
-            </Layout.Aside>
             <Layout.Main>
               <MainRoutes />
             </Layout.Main>
           </Layout.Section>
-
-          <Footer />
         </Layout>
       </div>
     );

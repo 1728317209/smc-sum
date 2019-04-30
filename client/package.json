@@ -1,7 +1,7 @@
 {
-  "name": "CMS",
+  "name": "SMC-SUM",
   "version": "1.0.0",
-  "description": "未期刊的投稿采编提供平台",
+  "description": "多方安全求和",
   "files": [
     "src/",
     "build/",
