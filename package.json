@@ -1,0 +1,45 @@
+{
+  "name": "cms",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server/index.js",
+  "scripts": {
+    "clientInstall": "cd client && npm install --no-package-lock",
+    "serverInstall": "cd server && npm install --no-package-lock",
+    "postinstall": "npm run clientInstall && npm run serverInstall",
+    "preInstall": "npm install --no-package-lock && npm run postinstall",
+    "clientStart": "cd client && npm run start",
+    "serverStart": "cd server && npm run server",
+    "start": "concurrently 'npm:serverStart' 'npm:clientStart'",
+    "build": "cd client && npm run build",
+    "clientLint": "cd client && npm run lint",
+    "serverLint": "cd server && npm run lint",
+    "lint": "npm run clientLint && npm run serverLint"
+  },
+  "keywords": [
+    "ice",
+    "ice-template"
+  ],
+  "author": {
+    "name": "BruinK",
+    "email": "bruink@klovex.cn"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "http://registry.npmjs.com",
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:BruinK/CMS.git"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "concurrently": "^4.1.0"
+  },
+  "title": "CMS",
+  "templateType": "koa2"
+}

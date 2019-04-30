@@ -1,0 +1,98 @@
+{
+  "name": "CMS",
+  "version": "1.0.0",
+  "description": "未期刊的投稿采编提供平台",
+  "files": [
+    "src/",
+    "build/",
+    "public/",
+    "tests/",
+    "_gitignore",
+    ".editorconfig",
+    ".eslintignore",
+    ".eslintrc"
+  ],
+  "dependencies": {
+    "@alifd/next": "^1.x",
+    "@antv/data-set": "^0.8.5",
+    "@icedesign/container": "^1.x",
+    "@icedesign/form-binder": "^1.x",
+    "@icedesign/foundation-symbol": "^1.x",
+    "@icedesign/img": "^1.x",
+    "@icedesign/layout": "^1.x",
+    "@icedesign/theme": "^1.x",
+    "axios": "^0.17.1",
+    "bizcharts": "3.1.0",
+    "classnames": "^2.2.5",
+    "enquire-js": "^0.1.2",
+    "immutable": "^3.8.2",
+    "is-hotkey": "^0.1.1",
+    "lodash": "^4.17.11",
+    "mockjs": "^1.0.1-beta3",
+    "moment": "^2.23.0",
+    "prop-types": "^15.5.8",
+    "rc-queue-anim": "^1.6.5",
+    "rc-scroll-anim": "^2.5.5",
+    "react": "^16.4.1",
+    "react-document-title": "^2.0.3",
+    "react-dom": "^16.4.1",
+    "react-pdf": "^4.0.5",
+    "react-redux": "^6.0.1",
+    "react-router-dom": "^4.2.2",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0",
+    "slate": "^0.32.5",
+    "slate-plain-serializer": "^0.5.6",
+    "slate-react": "^0.11.6"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.0.3",
+    "eslint": "^4.13.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-babel": "^4.1.1",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.5.1",
+    "ice-scripts": "^1.6.0",
+    "node-sass": "^4.11.0",
+    "redux-logger": "^3.0.6"
+  },
+  "scripts": {
+    "start": "ice dev --project-type=nodejs",
+    "build": "ice build --project-type=nodejs",
+    "lint": "eslint . --ext '.js,.jsx' --fix"
+  },
+  "publishConfig": {
+    "registry": "http://registry.npmjs.com",
+    "access": "public"
+  },
+  "buildConfig": {
+    "theme": "@icedesign/theme",
+    "entry": "src/index.js",
+    "localization": false,
+    "output": {
+      "publicPath": "./"
+    }
+  },
+  "scaffoldConfig": {
+    "builder": "ice-scripts",
+    "name": "ice-design-cms",
+    "title": "CMS 内容管理系统",
+    "categories": [
+      "行业领域"
+    ],
+    "screenshot": "",
+    "screenshots": []
+  },
+  "proxyConfig": {
+    "/api": {
+      "enable": true,
+      "target": "http://127.0.0.1:3000"
+    }
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "title": "CMS",
+  "templateType": "koa2"
+}
