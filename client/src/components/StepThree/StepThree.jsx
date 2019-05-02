@@ -48,7 +48,7 @@ export default class StepThree extends React.Component {
     if (decryptedSum) {
       return (
         <div className="step-three">
-          <Input addonBefore={<Button type="primary" size="medium">最终结果：</Button>} />
+          <Input addonBefore={<Button type="primary" size="medium">最终结果</Button>} />
         </div>
       );
     }
