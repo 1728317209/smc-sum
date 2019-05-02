@@ -9,7 +9,7 @@ export default class StepOne extends React.Component {
       isReady: false,
       readyNum: 1,
       unReadyNum: 10,
-      partyNum: null,
+      partyNum: 0,
     };
   }
 

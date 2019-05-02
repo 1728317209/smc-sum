@@ -1,5 +1,5 @@
 import React from 'react';
-import { Slider, Step } from '@alifd/next';
+import { Step } from '@alifd/next';
 import StepOne from '../StepOne';
 import StepTwo from '../StepTwo';
 import StepThree from '../StepThree';
@@ -12,7 +12,7 @@ export default class SmcStep extends React.Component {
     super(props);
     this.state = {
       step: 0,
-      isSponsor: false,
+      isSponsor: true,
       encryptedSum: null,
       decryptedSum: null,
     };
@@ -35,36 +35,43 @@ export default class SmcStep extends React.Component {
   }
 
   renderStep = (step) => {
-
+    const { isSponsor, encryptedSum, decryptedSum } = this.state;
+    switch (step) {
+      case 0:
+        return (
+          <StepOne
+            onIsSponsor={this.handleIsSponsor}
+            onStepChange={this.handleStepChange}
+          />
+        );
+      case 1:
+        return (
+          <StepTwo
+            isSponsor={isSponsor}
+            onStepChange={this.handleStepChange}
+            onGetEncryptedSum={this.handleEncryptedSum}
+          />
+        );
+      case 2:
+        return (
+          <StepThree
+            isSponsor={isSponsor}
+            encryptedSum={encryptedSum}
+            decryptedSum={decryptedSum}
+          />
+        );
+      default:
+        return null;
+    }
   }
 
   render() {
-    const {
-      step, isSponsor, encryptedSum, decryptedSum,
-    } = this.state;
+    const { step } = this.state;
     return (
       <div className="smc">
-        <Slider activeIndex={step} arrows={false} dots={false}>
-          <div key={0} className="smc-step">
-            <StepOne
-              onIsSponsor={this.handleIsSponsor}
-              onStepChange={this.handleStepChange}
-            />
-          </div>
-          <div key={1} className="smc-step">
-            <StepTwo
-              onStepChange={this.handleStepChange}
-              onGetEncryptedSum={this.handleEncryptedSum}
-            />
-          </div>
-          <div key={2} className="smc-step">
-            <StepThree
-              isSponsor={isSponsor}
-              encryptedSum={encryptedSum}
-              decryptedSum={decryptedSum}
-            />
-          </div>
-        </Slider>
+        <div className="smc-step">
+          { this.renderStep(step) }
+        </div>
         <Step current={step} className="steps">
           { steps.map((item, index) => <Step.Item key={index} title={item} />)}
         </Step>
