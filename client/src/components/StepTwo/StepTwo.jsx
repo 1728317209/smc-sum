@@ -18,8 +18,6 @@ export default class StepTwo extends React.Component {
       input: '',
       isSponsor,
       encInput: null,
-      ciphertext: '',
-      secKey: keys.sec,
       pubKey: keys.pub,
       showSecretKey: false,
     };
@@ -122,7 +120,6 @@ export default class StepTwo extends React.Component {
   }
 
   render() {
-    const { ciphertext, input } = this.state;
     return (
       <div className="step-two">
         { this.renderMakeKey() }

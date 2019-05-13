@@ -15,13 +15,7 @@ class SmcStep extends React.Component {
     super(props);
     this.state = {
       step: 0,
-      encryptedSum: null,
-      decryptedSum: null,
     };
-  }
-
-  handleEncryptedSum = (encryptedSum) => {
-    this.setState({ encryptedSum });
   }
 
   handleStepChange = (step) => {
@@ -30,15 +24,15 @@ class SmcStep extends React.Component {
     }
   }
 
-  handleSecKey = (secKey) => {
-    console.log('secKey', secKey);
+  handlePriKey = (priKey) => {
+    console.log('priKey', priKey);
     this.setState({
-      secKey,
+      priKey,
     });
   }
 
   renderStep = (step) => {
-    const { encryptedSum, decryptedSum } = this.state;
+    const { priKey } = this.state;
     const { actions, user } = this.props;
     switch (step) {
       case 0:
@@ -54,18 +48,16 @@ class SmcStep extends React.Component {
           <StepTwo
             user={user}
             actions={actions}
-            onGetSecKey={this.handleSecKey}
+            onGetSecKey={this.handlePriKey}
             onStepChange={this.handleStepChange}
-            onGetEncryptedSum={this.handleEncryptedSum}
           />
         );
       case 2:
         return (
           <StepThree
             user={user}
+            priKey={priKey}
             actions={actions}
-            encryptedSum={encryptedSum}
-            decryptedSum={decryptedSum}
           />
         );
       default:

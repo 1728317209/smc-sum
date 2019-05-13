@@ -1,4 +1,5 @@
 import React from 'react';
+import { BigInteger } from 'jsbn';
 import { Loading, Input, Button } from '@alifd/next';
 import './index.scss';
 
@@ -6,27 +7,59 @@ export default class StepThree extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      plaintextSum: null,
+      result: '',
+      isSponsor: props.user.role === 'sponsor',
     };
   }
 
-  handleDecrypt = (encryptedSum) => {
-    console.log('encryptedSum', encryptedSum);
+  componentWillMount() {
+    this.t = setInterval(() => {
+      if (this.state.isSponsor) {
+        this.props.actions.acGetEncDataProduct()
+          .then(({ response }) => {
+            clearInterval(this.t);
+            this.setState({
+              encDataProduct: new BigInteger(response.encDataProduct, 16),
+            });
+          });
+      } else {
+        this.props.actions.acGetResult()
+          .then(({ response }) => {
+            clearInterval(this.t);
+            this.setState({
+              result: response.result,
+            });
+          });
+      }
+    }, 5000);
+  }
+
+  handleDecrypt = () => {
+    const { encDataProduct } = this.state;
+    console.log('encDataProduct', encDataProduct);
+    const result = this.props.priKey.decrypt(encDataProduct);
     this.setState({
-      // plaintextSum: '',
+      result: result.toString(16),
+    });
+  }
+
+  publishResult = () => {
+    this.props.acSendRsult({
+      result: this.state.result,
     });
   }
 
   renderSponsor = () => {
-    const { encryptedSum } = this.props;
-    if (encryptedSum) {
+    const { encDataProduct } = this.props;
+    const { result } = this.state;
+    if (encDataProduct) {
       return (
         <div className="step-three">
           <Input
             className="item"
             placeholder="各参与方密文的乘积"
             size="medium"
-            value={encryptedSum}
+            value={encDataProduct.toString(16)}
             readOnly
             addonAfter={<Button type="primary" size="medium" onClick={this.handleDecrypt}>解密</Button>}
           />
@@ -34,8 +67,9 @@ export default class StepThree extends React.Component {
             className="item"
             placeholder="点击解密得到的明文"
             size="medium"
+            value={result}
             readOnly
-            addonAfter={<Button type="primary" size="medium" >发布</Button>}
+            addonAfter={<Button type="primary" size="medium" onClick={this.publishResult} >发布</Button>}
           />
         </div>
       );
