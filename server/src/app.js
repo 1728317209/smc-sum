@@ -28,9 +28,6 @@ app
   .use(router.allowedMethods())
   .use(serve(path.join(process.cwd(), '../client/build')))
   .listen(port, () => {
-    console.log('The server is running at:');
-    console.log(
-      `😁  😂  😈  === Local:http://localhost:${port}`
-    );
+    console.log(`The server is running at: http://localhost:${port}`);
   });
 

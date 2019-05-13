@@ -56,8 +56,8 @@ export default class StepThree extends React.Component {
   }
 
   render() {
-    const { isSponsor } = this.props;
-    if (isSponsor) {
+    const { user } = this.props;
+    if (user.role === 'sponsor') {
       return this.renderSponsor();
     }
     return this.renderUnSponsor();

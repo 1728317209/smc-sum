@@ -1,5 +1,8 @@
 import React from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { Step } from '@alifd/next';
+import * as allActions from '../../actions/index';
 import StepOne from '../StepOne';
 import StepTwo from '../StepTwo';
 import StepThree from '../StepThree';
@@ -7,21 +10,14 @@ import './index.scss';
 
 const steps = ['准备就绪', '发送数据', '计算并发布结果'];
 
-export default class SmcStep extends React.Component {
+class SmcStep extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       step: 0,
-      isSponsor: true,
       encryptedSum: null,
       decryptedSum: null,
     };
-  }
-
-  handleIsSponsor = (isSponsor) => {
-    if (isSponsor) {
-      this.setState({ isSponsor });
-    }
   }
 
   handleEncryptedSum = (encryptedSum) => {
@@ -34,20 +30,31 @@ export default class SmcStep extends React.Component {
     }
   }
 
+  handleSecKey = (secKey) => {
+    console.log('secKey', secKey);
+    this.setState({
+      secKey,
+    });
+  }
+
   renderStep = (step) => {
-    const { isSponsor, encryptedSum, decryptedSum } = this.state;
+    const { encryptedSum, decryptedSum } = this.state;
+    const { actions, user } = this.props;
     switch (step) {
       case 0:
         return (
           <StepOne
-            onIsSponsor={this.handleIsSponsor}
+            user={user}
+            actions={actions}
             onStepChange={this.handleStepChange}
           />
         );
       case 1:
         return (
           <StepTwo
-            isSponsor={isSponsor}
+            user={user}
+            actions={actions}
+            onGetSecKey={this.handleSecKey}
             onStepChange={this.handleStepChange}
             onGetEncryptedSum={this.handleEncryptedSum}
           />
@@ -55,7 +62,8 @@ export default class SmcStep extends React.Component {
       case 2:
         return (
           <StepThree
-            isSponsor={isSponsor}
+            user={user}
+            actions={actions}
             encryptedSum={encryptedSum}
             decryptedSum={decryptedSum}
           />
@@ -79,3 +87,16 @@ export default class SmcStep extends React.Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  const { smc } = state;
+  return { ...smc };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(allActions, dispatch),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SmcStep);

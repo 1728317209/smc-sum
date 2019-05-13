@@ -2,30 +2,12 @@ const mongoose = require('mongoose');
 const glob = require('glob');
 const { resolve } = require('path');
 
-const db = 'mongodb://188.131.246.175/CMS';
+const db = 'mongodb://188.131.246.175/SMC';
 
 mongoose.Promise = global.Promise;
 
 exports.initSchemas = () => {
   glob.sync(resolve(__dirname, './schema', '**/*.js')).forEach(require);
-};
-
-exports.initAdmin = async () => {
-  const User = mongoose.model('User');
-  const user = await User.findOne({
-    email: 'bruink@klovex.cn',
-  });
-
-  if (!user) {
-    const newUser = new User({
-      username: 'Bruin',
-      email: 'bruink@klovex.cn',
-      password: '123abc',
-      role: 'admin',
-    });
-
-    await newUser.save();
-  }
 };
 
 exports.connect = () => {
@@ -61,9 +43,8 @@ exports.connect = () => {
 
     mongoose.connection.once('open', () => {
       this.initSchemas();
-      this.initAdmin();
       resolve();
-      console.log(' 👍  👍  👍  ==> MongoDB Connected successfully!');
+      console.log('MongoDB Connected successfully!');
     });
   });
 };

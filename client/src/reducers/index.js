@@ -1,17 +1,18 @@
 import { combineReducers } from 'redux';
 import * as ActionTypes from '../const/ActionTypes';
 
-function auth(state = {
-  isLogging: false,
-  isRegistering: false,
-  userInfo: {},
-}, action) {
+const INIT_STATE = {
+  user: {},
+};
+
+function smc(state = INIT_STATE, action) {
   switch (action.type) {
-    case `${ActionTypes.LOCAL_APP_LOGIN}`: {
-      const { userInfo } = action;
+    case `${ActionTypes.READY}_SUC`: {
       return {
         ...state,
-        userInfo,
+        user: {
+          ...action.response.data,
+        },
       };
     }
     default:
@@ -20,6 +21,4 @@ function auth(state = {
 }
 
 
-export default combineReducers({
-  auth,
-});
+export default combineReducers({ smc });
