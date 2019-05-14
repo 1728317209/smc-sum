@@ -1,4 +1,4 @@
-import { BigInteger } from 'jsbn';
+const { BigInteger } = require('jsbn');
 
 const userServer = require('../service/user');
 
@@ -25,15 +25,12 @@ class SmcController {
   async getPubKey(ctx) {
     const { pubKey } = ctx.request.body;
     this.pubKey = pubKey;
-    console.log('this.pubKey', this.pubKey);
     ctx.body = {
       ret: 1,
     };
   }
 
   async sendPubKey(ctx) {
-    console.log('this', this);
-    console.log('this.pubKey', this.pubKey);
     if (this.pubKey) {
       ctx.body = {
         ret: 1,
