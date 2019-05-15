@@ -13,8 +13,6 @@ export default class StepTwo extends React.Component {
     if (isSponsor) {
       keys = Paillier.generateKeys(1024);
       props.onGetSecKey(keys.sec);
-      console.log('keys', keys);
-      this.test(keys);
     }
     this.state = {
       input: '',
@@ -23,18 +21,6 @@ export default class StepTwo extends React.Component {
       pubKey: keys.pub,
       showSecretKey: false,
     };
-  }
-
-  test = (keys) => {
-    const a = keys.pub.encrypt(2);
-    console.log('a', a);
-    const b = keys.pub.encrypt(3);
-    console.log('b', b);
-    const c = keys.pub.mult(a, b);
-    console.log('c', c);
-    const d = keys.sec.decrypt(c);
-    console.log('d', d);
-    console.log('d', d.toString(16));
   }
 
   componentWillMount() {

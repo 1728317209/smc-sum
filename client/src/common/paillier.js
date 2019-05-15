@@ -43,9 +43,7 @@ const Paillier = ((() => {
     // 生成密钥
     Keypair(keySize, n, l) {
       this.pub = new paillier.PublicKey(keySize, n);
-      console.log('公钥：', this.pub);
       if (l) this.sec = new paillier.PrivateKey(l, this.pub);
-      console.log('私钥', this.sec);
     },
 
     // 生成公钥
@@ -62,7 +60,6 @@ const Paillier = ((() => {
     // 生成私钥
     PrivateKey(lambda, pubKey) {
       this.lambda = lambda;
-      console.log('this', this);
       this.pubKey = pubKey;
       const u = pubKey.np1.modPow(this.lambda, pubKey.n2); // u = (n + 1)^this.lambda mod n^2
       this.mu = this.pubKey.L(u).modInverse(pubKey.n);

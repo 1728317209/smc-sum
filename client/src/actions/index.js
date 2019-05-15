@@ -46,7 +46,7 @@ export const acGetEncDataProduct = () => ({
   },
 });
 
-export const acSendRsult = result => ({
+export const acSendRsult = ({ result }) => ({
   API: {
     type: ACTypes.SEND_RESULT,
     endpoint: '/api/send_result',
