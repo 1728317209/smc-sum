@@ -41,7 +41,7 @@ export default class StepThree extends React.Component {
     const result = this.props.priKey.decrypt(encDataProduct);
     console.log('result', result);
     this.setState({
-      result: result.toString(16),
+      result: result.toString(),
     });
   }
 

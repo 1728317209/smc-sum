@@ -13,7 +13,6 @@ class SmcController {
     this.getPartyNum = this.getPartyNum.bind(this);
     this.clearDatabase = this.clearDatabase.bind(this);
     this.sendEncDataProduct = this.sendEncDataProduct.bind(this);
-    this.checkReadyPartyNum = this.checkReadyPartyNum.bind(this);
   }
 
   async ready(ctx) {
@@ -111,17 +110,6 @@ class SmcController {
         ret: 2,
       };
     }
-  }
-
-  async checkReadyPartyNum(ctx) {
-    const readyPartyNum = await userServer.getReadyPartyNum();
-    ctx.body = {
-      ret: 1,
-      data: {
-        readyPartyNum,
-        partyNum: this.partyNum,
-      },
-    };
   }
 
   async clearDatabase(ctx) {

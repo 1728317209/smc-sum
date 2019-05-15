@@ -64,14 +64,6 @@ export const acGetResult = () => ({
   },
 });
 
-export const acCheckReadyPartyNum = () => ({
-  API: {
-    type: ACTypes.SEND_ENC_DATA,
-    endpoint: '/api/check_ready_party_num',
-    params: {},
-  },
-});
-
 export const acGetPubKey = () => ({
   API: {
     type: ACTypes.GET_PUB_KEY,
