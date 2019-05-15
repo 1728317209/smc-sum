@@ -70,16 +70,15 @@ class SmcController {
     console.log('this.partyNum', this.partyNum);
     console.log('this.encData.length', this.encData.length);
     if (this.encData.length === this.partyNum) {
-      const n2 = new BigInteger(this.pubKey.n2);
+      const n2 = new BigInteger(this.pubKey.n2, 16);
       console.log('n2', n2);
       this.encData.forEach((item, idx) => {
         if (idx) {
-          this.encDataProduct = this.encDataProduct.multiply(item);
+          this.encDataProduct = this.encDataProduct.multiply(item).remainder(n2);
         } else {
           this.encDataProduct = this.encData[0];
         }
       });
-      this.encDataProduct = this.encDataProduct.remainder(n2);
       console.log('this.encDataProduct', this.encDataProduct);
       ctx.body = {
         ret: 1,

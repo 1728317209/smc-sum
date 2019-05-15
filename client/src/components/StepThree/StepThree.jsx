@@ -83,7 +83,10 @@ export default class StepThree extends React.Component {
     if (result) {
       return (
         <div className="step-three">
-          <Input addonBefore={<Button type="primary" size="medium">最终结果</Button>} />
+          <Input
+            value={result}
+            addonBefore={<Button type="primary" size="medium">最终结果</Button>}
+          />
         </div>
       );
     }
