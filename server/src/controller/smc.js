@@ -74,12 +74,13 @@ class SmcController {
       console.log('n2', n2);
       this.encData.forEach((item, idx) => {
         if (idx) {
-          this.encDataProduct = this.encDataProduct.multiply(item).remainder(n2);
+          this.encDataProduct = this.encDataProduct.multiply(item);
         } else {
           this.encDataProduct = this.encData[0];
         }
       });
       console.log('this.encDataProduct', this.encDataProduct);
+      this.encDataProduct = this.encDataProduct.remainder(n2);
       ctx.body = {
         ret: 1,
         encDataProduct: this.encDataProduct.toString(16),
