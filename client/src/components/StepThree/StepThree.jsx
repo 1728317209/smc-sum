@@ -25,6 +25,7 @@ export default class StepThree extends React.Component {
       } else {
         this.props.actions.acGetResult()
           .then(({ response }) => {
+            console.log('acGetResult-response', response);
             clearInterval(this.t);
             this.setState({
               result: response.result,
@@ -37,8 +38,8 @@ export default class StepThree extends React.Component {
   handleDecrypt = () => {
     const { encDataProduct } = this.state;
     console.log('encDataProduct', encDataProduct);
-    console.log('this.props', this.props);
     const result = this.props.priKey.decrypt(encDataProduct);
+    console.log('result', result);
     this.setState({
       result: result.toString(16),
     });
@@ -78,8 +79,8 @@ export default class StepThree extends React.Component {
   }
 
   renderUnSponsor = () => {
-    const { decryptedSum } = this.props;
-    if (decryptedSum) {
+    const { result } = this.state;
+    if (result) {
       return (
         <div className="step-three">
           <Input addonBefore={<Button type="primary" size="medium">最终结果</Button>} />
