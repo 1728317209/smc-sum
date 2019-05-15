@@ -5,4 +5,5 @@ export const GET_PUB_KEY = 'GET_PUB_KEY';
 export const SEND_PUB_KEY = 'SEND_PUB_KEY';
 export const SEND_PART_NUM = 'SEND_PART_NUM';
 export const SEND_ENC_DATA = 'SEND_ENC_DATA';
+export const CLEAR_DATABASE = 'CLEAR_DATABASE';
 export const GET_ENC_DATA_PRODUCT = 'GET_ENC_DATA_PRODUCT';

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-// const API_DOMAIN = 'http:127.0.0.1:3000';
+// const API_DOMAIN = 'http://188.131.246.175:3000';
 const API_DOMAIN = '';
 
 /* eslint-disable  */
@@ -36,10 +36,11 @@ export default store => next => action => {
         response: res.data
       });
     }).catch(err => {
-      return next({
+      next({
         type: `${type}_FAI`,
         response: err.data
       });
+      return Promise.reject(err.data)
     });
 };
 
@@ -49,7 +50,7 @@ const callServerApi = (endpoint, params) => new Promise((resolve, reject) => {
     url: API_DOMAIN + endpoint,
     data: params,
   }).then(response => {
-    if (response.data.ret === 1) {
+    if (response.data.ret === 1 || response.ret === 1) {
       return resolve({data: response.data});
     }
     return reject({data: response.data});

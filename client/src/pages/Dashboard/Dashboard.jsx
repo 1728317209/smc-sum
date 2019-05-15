@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import * as authActionCreators from '../../actions';
+import * as actionCreators from '../../actions';
 
 import Title from '../../components/Title';
 import SmcStep from '../../components/SmcStep';
@@ -18,7 +18,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  authActions: bindActionCreators(authActionCreators, dispatch),
+  actions: bindActionCreators(actionCreators, dispatch),
 });
 @connect(mapStateToProps, mapDispatchToProps)
 @withRouter
@@ -33,7 +33,10 @@ export default class Dashboard extends Component {
   render() {
     return (
       <div className="dashboard-page">
-        <Title name="Secure multiparty summation" />
+        <Title
+          name="Secure multiparty summation"
+          actions={this.props.actions}
+        />
         <SmcStep />
       </div>
     );

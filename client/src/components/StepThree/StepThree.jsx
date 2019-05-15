@@ -37,6 +37,7 @@ export default class StepThree extends React.Component {
   handleDecrypt = () => {
     const { encDataProduct } = this.state;
     console.log('encDataProduct', encDataProduct);
+    console.log('this.props', this.props);
     const result = this.props.priKey.decrypt(encDataProduct);
     this.setState({
       result: result.toString(16),
@@ -50,8 +51,7 @@ export default class StepThree extends React.Component {
   }
 
   renderSponsor = () => {
-    const { encDataProduct } = this.props;
-    const { result } = this.state;
+    const { result, encDataProduct } = this.state;
     if (encDataProduct) {
       return (
         <div className="step-three">

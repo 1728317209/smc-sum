@@ -1,5 +1,6 @@
 const { BigInteger } = require('jsbn');
 
+const mongoose = require('mongoose');
 const userServer = require('../service/user');
 
 class SmcController {
@@ -10,6 +11,7 @@ class SmcController {
     this.sendPubKey = this.sendPubKey.bind(this);
     this.getEncData = this.getEncData.bind(this);
     this.getPartyNum = this.getPartyNum.bind(this);
+    this.clearDatabase = this.clearDatabase.bind(this);
     this.sendEncDataProduct = this.sendEncDataProduct.bind(this);
     this.checkReadyPartyNum = this.checkReadyPartyNum.bind(this);
   }
@@ -120,6 +122,26 @@ class SmcController {
         partyNum: this.partyNum,
       },
     };
+  }
+
+  async clearDatabase(ctx) {
+    const User = mongoose.model('User');
+    await User.remove((err) => {
+      if (err) {
+        ctx.body = {
+          ret: 2,
+        };
+      } else {
+        this.encDataProduct = null;
+        this.partyNum = null;
+        this.encData = null;
+        this.pubKey = null;
+        this.result = null;
+        ctx.body = {
+          ret: 1,
+        };
+      }
+    });
   }
 }
 

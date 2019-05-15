@@ -10,6 +10,7 @@ module.exports = (router) => {
     .post('/send_pub_key', smcController.getPubKey)
     .post('/send_part_num', smcController.getPartyNum)
     .post('/send_enc_data', smcController.getEncData)
+    .post('/clear_database', smcController.clearDatabase)
     .post('/get_enc_data_product', smcController.sendEncDataProduct)
     .post('/check_ready_party_num', smcController.checkReadyPartyNum);
 };

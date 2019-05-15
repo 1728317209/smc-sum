@@ -79,3 +79,11 @@ export const acGetPubKey = () => ({
     params: {},
   },
 });
+
+export const acCclearDatabase = () => ({
+  API: {
+    type: ACTypes.CLEAR_DATABASE,
+    endpoint: '/api/clear_database',
+    params: {},
+  },
+});
