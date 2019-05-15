@@ -1,6 +1,6 @@
 import React from 'react';
 import { BigInteger } from 'jsbn';
-import { Input, Button, Loading } from '@alifd/next';
+import { Input, Button, Loading, Message } from '@alifd/next';
 import Paillier from '../../common/paillier';
 import './index.scss';
 
@@ -13,6 +13,7 @@ export default class StepTwo extends React.Component {
     if (isSponsor) {
       keys = Paillier.generateKeys(1024);
       props.onGetSecKey(keys.sec);
+      this.sendPublishKey(keys);
     }
     this.state = {
       input: '',
@@ -42,14 +43,16 @@ export default class StepTwo extends React.Component {
     }
   }
 
-  sendPublishKey = () => {
-    const pubKey = { ...this.state.pubKey };
-    console.log('pubKey', pubKey);
+  sendPublishKey = (keys) => {
+    const pubKey = { ...keys.pub };
     const arr = ['n', 'n2', 'np1'];
     arr.forEach((item) => {
       pubKey[item] = pubKey[item].toString(16);
     });
-    this.props.actions.acSendPubKey({ pubKey });
+    this.props.actions.acSendPubKey({ pubKey })
+      .then(() => {
+        Message.show({ content: '密钥已生成 & 公钥已发送！' });
+      });
   }
 
   handleChange = (value) => {
@@ -79,17 +82,6 @@ export default class StepTwo extends React.Component {
     this.setState({
       showSecretKey: !this.state.showSecretKey,
     });
-  }
-
-  renderMakeKey = () => {
-    if (this.state.isSponsor) {
-      return (
-        <div className="send-key">
-          密钥已生成，请点击发布公钥：<Button type="primary" size="medium" onClick={this.sendPublishKey}>发布</Button>
-        </div>
-      );
-    }
-    return null;
   }
 
   renderSendData = () => {
@@ -122,7 +114,6 @@ export default class StepTwo extends React.Component {
   render() {
     return (
       <div className="step-two">
-        { this.renderMakeKey() }
         { this.renderSendData() }
       </div>
     );

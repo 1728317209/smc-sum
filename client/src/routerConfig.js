@@ -4,7 +4,7 @@
 import Dashboard from './pages/Dashboard';
 
 const routerConfig = [{
-  path: '/dashboard',
+  path: '/smc',
   component: Dashboard,
 }];
 

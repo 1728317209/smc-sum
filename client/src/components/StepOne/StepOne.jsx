@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Input } from '@alifd/next';
+import { Button, Input, Message } from '@alifd/next';
 import './index.scss';
 
 export default class StepOne extends React.Component {
@@ -7,15 +7,13 @@ export default class StepOne extends React.Component {
     super(props);
     this.state = {
       isReady: false,
-      readyNum: 0,
-      partyNum: 0,
+      partyNum: '',
     };
   }
 
   handleReady = () => {
     this.setState({
       isReady: true,
-      readyNum: this.state.readyNum + 1,
     });
     this.props.actions.acReady()
       .then(({ response }) => {
@@ -33,11 +31,16 @@ export default class StepOne extends React.Component {
 
   handleSendPartyNum = () => {
     const { partyNum } = this.state;
-    if (partyNum) {
+    if (partyNum && partyNum > 1) {
       this.props.actions.acSendPartyNum({
         partyNum,
       }).then(() => {
         this.props.onStepChange(1);
+      });
+    } else {
+      Message.show({
+        type: 'warning',
+        content: '输入不合法！',
       });
     }
   }

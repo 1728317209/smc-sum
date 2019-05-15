@@ -54,8 +54,8 @@ class MainRoutes extends Component {
           return <Redirect key={index} exact from={item.from} to={item.to} />;
         })}
 
-        {/* 首页默认重定向到 /dashboard */}
-        <Redirect exact from="/" to="/dashboard" />
+        {/* 首页默认重定向到 /smc */}
+        <Redirect exact from="/" to="/smc" />
 
         {/* 未匹配到的路由重定向到 <Guide> 组件，实际情况应该重定向到 404 */}
         <Route component={NotFound} />
