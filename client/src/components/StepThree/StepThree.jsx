@@ -45,7 +45,7 @@ export default class StepThree extends React.Component {
   }
 
   publishResult = () => {
-    this.props.acSendRsult({
+    this.props.actions.acSendRsult({
       result: this.state.result,
     });
   }
