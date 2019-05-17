@@ -11,11 +11,8 @@ const Paillier = ((() => {
     return new BigInteger(randomHex, 16);
   };
 
-
   // 定义paillier对象
   const paillier = {
-
-
   // 生成p、q、n
     generateKeys(keySize) {
       let p;
@@ -24,45 +21,42 @@ const Paillier = ((() => {
       while (true) {
         do {
           p = random(keySize >> 1);
-        } while (!p.isProbablePrime(10));
+        } while (!p.isProbablePrime(10)); // 测试是否是大素数
 
         do {
           q = random(keySize >> 1);
-        } while (!q.isProbablePrime(10));
+        } while (!q.isProbablePrime(10)); // 测试是否是大素数
 
         n = p.multiply(q);
-        if (!n.testBit(keySize - 1) || p.compareTo(q) === 0) break;
+        if (!n.testBit(keySize - 1) || p.compareTo(q) === 0) break; // 判断 n.gcd(p1.multiply(q1)).compareTo(BigInteger.ONE)
       }
       const p1 = p.subtract(BigInteger.ONE);
       const q1 = q.subtract(BigInteger.ONE);
-      const l = p1.multiply(q1).divide(p1.gcd(q1));
-      return new this.Keypair(keySize, n, l);
+      const lambda = p1.multiply(q1).divide(p1.gcd(q1)); // lambda = (p - 1)(q - 1)
+      return new this.Keypair(keySize, n, lambda);
     },
 
-
     // 生成密钥
-    Keypair(keySize, n, l) {
+    Keypair(keySize, n, lambda) {
       this.pub = new paillier.PublicKey(keySize, n);
-      if (l) this.sec = new paillier.PrivateKey(l, this.pub);
+      if (lambda) this.sec = new paillier.PrivateKey(lambda, this.pub);
     },
 
     // 生成公钥
     PublicKey(keySize, n) {
       if (keySize % 2 !== 0) throw new Error('Keysize should be even.');
-
       this.keySize = keySize;
       this.n = n;
       this.n2 = n.square();
-      this.np1 = n.add(BigInteger.ONE);
-      this.rnCache = [];
+      this.g = n.add(BigInteger.ONE); // g = n + 1
     },
 
     // 生成私钥
     PrivateKey(lambda, pubKey) {
       this.lambda = lambda;
       this.pubKey = pubKey;
-      const u = pubKey.np1.modPow(this.lambda, pubKey.n2); // u = (n + 1)^this.lambda mod n^2
-      this.mu = this.pubKey.L(u).modInverse(pubKey.n);
+      const u = pubKey.g.modPow(this.lambda, pubKey.n2); // u = g^lambda mod n^2
+      this.mu = this.pubKey.L(u).modInverse(pubKey.n); // mu = 1 / (L(g^lambda mod n^2) % n)
       if (this.mu.toString() === '0') {
         throw new Error('Error: n does not divide order of g');
       }
@@ -71,23 +65,19 @@ const Paillier = ((() => {
     PublicKeyPrototype: {
       encrypt(m) {
         m = this.convertToBn(m);
+        // 因为：(n + 1)^m ≡ n*m + 1 % n^2
+        // 所以：g^m % n^2 = (n + 1)^m % n^2 = (n * m + 1) % n^2
         const gm = this.n.multiply(m).add(BigInteger.ONE).mod(this.n2);
         const rn = this.generateRn();
         return gm.multiply(rn).mod(this.n2);
       },
-      // 其实是求密文的乘积
-
-
-      // 密文乘积
-      mult(a, b) {
+      mult(a, b) { // (a * b) % n^2
         return a.multiply(b).remainder(this.n2);
       },
-
-
-      L(x) {
-        return x.subtract(BigInteger.ONE).divide(this.n); // L(x) = (x -1) / n
+      L(x) { // L(x) = (x -1) / n
+        return x.subtract(BigInteger.ONE).divide(this.n);
       },
-      generateRn() {
+      generateRn() { // 生成随机数r，0 < r < n
         let r;
         do {
           r = random(this.keySize);
@@ -106,8 +96,8 @@ const Paillier = ((() => {
 
     PrivateKeyPrototype: {
       decrypt(c) {
-        const x = this.pubKey.L(c.modPow(this.lambda, this.pubKey.n2));
-        const m = x.multiply(this.mu).mod(this.pubKey.n);
+        const x = this.pubKey.L(c.modPow(this.lambda, this.pubKey.n2)); // L(c^lambda % n^2)
+        const m = x.multiply(this.mu).mod(this.pubKey.n); // m = L(c^lambda % n^2) * mu % n
         return m;
       },
     },
