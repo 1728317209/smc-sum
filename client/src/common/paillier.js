@@ -18,6 +18,7 @@ const Paillier = ((() => {
       let p;
       let q;
       let n;
+      let lambda;
       while (true) {
         do {
           p = random(keySize >> 1);
@@ -27,12 +28,12 @@ const Paillier = ((() => {
           q = random(keySize >> 1);
         } while (!q.isProbablePrime(10)); // 测试是否是大素数
 
-        n = p.multiply(q);
-        if (!n.testBit(keySize - 1) || p.compareTo(q) === 0) break; // 判断 n.gcd(p1.multiply(q1)).compareTo(BigInteger.ONE)
+        n = p.multiply(q); // n = pq
+        const p1 = p.subtract(BigInteger.ONE); // p - 1
+        const q1 = q.subtract(BigInteger.ONE); // q - 1
+        lambda = p1.multiply(q1); // λ = (p-1)(q-1)
+        if (!n.gcd(lambda).compareTo(BigInteger.ONE)) break; // gcd(pq,(p−1)(q−1)) = 1 保证两个质数长度相等
       }
-      const p1 = p.subtract(BigInteger.ONE);
-      const q1 = q.subtract(BigInteger.ONE);
-      const lambda = p1.multiply(q1).divide(p1.gcd(q1)); // lambda = (p - 1)(q - 1)
       return new this.Keypair(keySize, n, lambda);
     },
 
@@ -55,8 +56,9 @@ const Paillier = ((() => {
     PrivateKey(lambda, pubKey) {
       this.lambda = lambda;
       this.pubKey = pubKey;
-      const u = pubKey.g.modPow(this.lambda, pubKey.n2); // u = g^lambda mod n^2
-      this.mu = this.pubKey.L(u).modInverse(pubKey.n); // mu = 1 / (L(g^lambda mod n^2) % n)
+      // const u = pubKey.g.modPow(this.lambda, pubKey.n2); // u = g^lambda mod n^2
+      // this.mu = this.pubKey.L(u).modInverse(pubKey.n); // mu = 1 / (L(g^lambda mod n^2) % n)
+      this.mu = lambda.modInverse(pubKey.n);
       if (this.mu.toString() === '0') {
         throw new Error('Error: n does not divide order of g');
       }
@@ -82,7 +84,7 @@ const Paillier = ((() => {
         do {
           r = random(this.keySize);
         } while (r.compareTo(this.n) >= 0);
-        return r.modPow(this.n, this.n2);
+        return r.modPow(this.n, this.n2); // r^n mod n^2
       },
       convertToBn(m) {
         if (typeof m === 'string') {
