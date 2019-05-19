@@ -32,7 +32,7 @@ export default class StepTwo extends React.Component {
             clearInterval(this.t);
             const pubKey = { ...response.pubKey };
             Object.assign(pubKey, Paillier.PublicKeyPrototype);
-            const arr = ['n', 'n2', 'np1'];
+            const arr = ['n', 'n2', 'g'];
             arr.forEach((item) => {
               pubKey[item] = new BigInteger(pubKey[item], 16);
             });
@@ -45,7 +45,7 @@ export default class StepTwo extends React.Component {
 
   sendPublishKey = (keys) => {
     const pubKey = { ...keys.pub };
-    const arr = ['n', 'n2', 'np1'];
+    const arr = ['n', 'n2', 'g'];
     arr.forEach((item) => {
       pubKey[item] = pubKey[item].toString(16);
     });
