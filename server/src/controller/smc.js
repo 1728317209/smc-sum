@@ -66,11 +66,8 @@ class SmcController {
   }
 
   async sendEncDataProduct(ctx) {
-    console.log('this.partyNum', this.partyNum);
-    console.log('this.encData.length', this.encData.length);
     if (this.encData.length === this.partyNum) {
       const n2 = new BigInteger(this.pubKey.n2, 16);
-      console.log('n2', n2);
       this.encData.forEach((item, idx) => {
         if (idx) {
           this.encDataProduct = this.encDataProduct.multiply(item);
@@ -78,7 +75,6 @@ class SmcController {
           this.encDataProduct = this.encData[0];
         }
       });
-      console.log('this.encDataProduct', this.encDataProduct);
       this.encDataProduct = this.encDataProduct.remainder(n2);
       ctx.body = {
         ret: 1,
