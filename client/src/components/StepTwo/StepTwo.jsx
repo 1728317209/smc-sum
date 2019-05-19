@@ -30,6 +30,7 @@ export default class StepTwo extends React.Component {
         this.props.actions.acGetPubKey()
           .then(({ response }) => {
             clearInterval(this.t);
+            Message.show({ content: '已获得公钥！' });
             const pubKey = { ...response.pubKey };
             Object.assign(pubKey, Paillier.PublicKeyPrototype);
             const arr = ['n', 'n2', 'g'];
