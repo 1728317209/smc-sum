@@ -65,6 +65,8 @@ export default class StepTwo extends React.Component {
     this.props.onStepChange(2);
     this.props.actions.acSendData({
       encData: this.state.encInput.toString(16),
+    }).then(() => {
+      Message.show({ content: '密文已发送！' });
     });
   };
 

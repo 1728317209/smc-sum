@@ -1,6 +1,6 @@
 import React from 'react';
 import { BigInteger } from 'jsbn';
-import { Loading, Input, Button } from '@alifd/next';
+import { Loading, Input, Button, Message } from '@alifd/next';
 import './index.scss';
 
 export default class StepThree extends React.Component {
@@ -18,6 +18,7 @@ export default class StepThree extends React.Component {
         this.props.actions.acGetEncDataProduct()
           .then(({ response }) => {
             clearInterval(this.t);
+            Message.show({ content: '已获得密文乘积，请解密并公布！' });
             this.setState({
               encDataProduct: new BigInteger(response.encDataProduct, 16),
             });
@@ -25,8 +26,8 @@ export default class StepThree extends React.Component {
       } else {
         this.props.actions.acGetResult()
           .then(({ response }) => {
-            console.log('acGetResult-response', response);
             clearInterval(this.t);
+            Message.show({ content: '已获得多方数据之和！' });
             this.setState({
               result: response.result,
             });
@@ -37,9 +38,7 @@ export default class StepThree extends React.Component {
 
   handleDecrypt = () => {
     const { encDataProduct } = this.state;
-    console.log('encDataProduct', encDataProduct);
     const result = this.props.priKey.decrypt(encDataProduct);
-    console.log('result', result);
     this.setState({
       result: result.toString(),
     });
@@ -48,6 +47,8 @@ export default class StepThree extends React.Component {
   publishResult = () => {
     this.props.actions.acSendRsult({
       result: this.state.result,
+    }).then(() => {
+      Message.show({ content: '最终结果发布成功！' });
     });
   }
 
